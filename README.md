@@ -1,10 +1,6 @@
 # journal_publication
 It is an application of journal publication.
 
-## Features
-- Create, read, update, delete and search student details.
-- Integration with MySQL database.
-
 ## Technologies Used
 
 PHP
