@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +24,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
+            width: 98%;
             margin: 0; /* Reset margin to ensure no additional margins */
         }
 
@@ -195,6 +199,7 @@
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="upload.php">Upload Paper</a></li>
             <li><a href="update_user.php">Settings</a></li>
+            <li><a href="about.php">About us</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
