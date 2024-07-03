@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <title>Approval Queue</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Approval Queue</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Paper</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- PHP code to fetch and display pending papers -->
+                <?php
+                include '../php/db.php';
+                $sql = "SELECT * FROM papers WHERE status='pending'";
+                $result = $conn->query($sql);
+                while ($row = $result->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo $row['title']; ?></td>
+                        <td><a href="../uploads/<?php echo $row['paper']; ?>" target="_blank">View Paper</a></td>
+                        <td>
+                            <form action="../php/approve.php" method="POST">
+                                <input type="hidden" name="paper_id" value="<?php echo $row['id']; ?>">
+                                <button type="submit">Approve</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

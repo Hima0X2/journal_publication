@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #adb5bd;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .main-content {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .main-content h3 {
+            margin-top: 0;
+        }
+
+        .main-content .table-container {
+            overflow-x: auto;
+        }
+
+        .main-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .main-content th, .main-content td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .main-content th {
+            background-color: black;
+            color: #fff;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-icons {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .social-icons a {
+            margin-right: 10px;
+        }
+
+        .social-icons .icon {
+            width: 30px; /* Adjust the width as needed */
+            height: auto;
+        }
+
+        .contact-info {
+            text-align: right;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+        }
+
+        .contact-info form {
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info input[type="email"] {
+            padding: 8px;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        .contact-info button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .navbar ul li {
+                margin-left: 10px;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+
+            .main-content th, .main-content td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="upload.php">Upload Paper</a></li>
+            <li><a href="update_user.php">Settings</a></li>
+            <li><a href="logout.php">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="main-content">
+            <h1>Paper Publications</h1>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Paper</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paper-table-body">
+                        <!-- Papers will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-left">
+            <div class="social-icons">
+                <a href="#" target="_blank"><img src="../images/facebook.png" class="icon"></a>
+                <a href="#" target="_blank"><img src="../images/instagram.png" class="icon"></a>
+                <a href="#" target="_blank"><img src="../images/twit.png" class="icon"></a>
+                <a href="#" target="_blank"><img src="../images/linkedin.png" class="icon"></a>
+            </div>
+        </div>
+        <div class="contact-info">
+            <p>Get in Touch</p>
+            <p><i class="fas fa-map-marker-alt"></i> Chandpur,Dhaka,Bangladesh</p>
+            <p><i class="fas fa-envelope"></i> info@example.com</p>
+            <p><i class="fas fa-phone"></i> +8801872879611</p>
+        
+            <form action="submit_email.php" method="POST">
+                <input type="email" id="email" name="email" placeholder="Your email...">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        
+    </footer>
+
+    <script>
+        function fetchApprovedPapers() {
+            fetch('fetch_papers.php')
+                .then(response => response.json())
+                .then(papers => {
+                    const tableBody = document.getElementById('paper-table-body');
+                    tableBody.innerHTML = ''; 
+                    papers.forEach(paper => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${paper.title}</td>
+                            <td><a href="#" onclick="openPaperDescription(event, '${paper.title}', '${paper.description}')">View Paper</a></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching approved papers:', error));
+        }
+
+        function openPaperDescription(event, title, description) {
+            event.preventDefault();
+            const descriptionWindow = window.open('', '_blank');
+            descriptionWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${title} - Paper Description</title>
+                    <style>
+                        body {
+                            font-family: 'Roboto', sans-serif;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                        }
+                        h2 {
+                            color: #007bff;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>${title}</h2>
+                    <p>${description}</p>
+                </body>
+                </html>
+            `);
+        }
+        window.onload = function() {
+            fetchApprovedPapers();
+        };
+    </script>
+</body>
+</html>
