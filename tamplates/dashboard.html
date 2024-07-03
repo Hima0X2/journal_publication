@@ -64,7 +64,7 @@
             margin-top: 20px;
         }
 
-        .main-content h3 {
+        .main-content h1 {
             margin-top: 0;
         }
 
@@ -85,7 +85,7 @@
         }
 
         .main-content th {
-            background-color: black;
+            background-color: #343a40;
             color: #fff;
         }
 
@@ -174,6 +174,7 @@
     <div class="content">
         <div class="main-content">
             <h1>Paper Publications</h1>
+            <input type="text" id="searchInput" onkeyup="searchPapers()" placeholder="Search by title..." style="width: 800px; padding: 10px; font-size: 16px;">
             <div class="table-container">
                 <table>
                     <thead>
@@ -182,9 +183,9 @@
                             <th>Paper</th>
                         </tr>
                     </thead>
-                    <tbody id="paper-table-body">
-                        <!-- Papers will be dynamically inserted here -->
-                    </tbody>
+                    <tbody id="pending-papers"></tbody>
+                    <tbody id="accepted-papers"></tbody>
+                    <tbody id="rejected-papers"></tbody>
                 </table>
             </div>
         </div>
@@ -210,28 +211,53 @@
                 <button type="submit">Submit</button>
             </form>
         </div>
-        
     </footer>
 
     <script>
+        // Function to filter papers by title
+        function searchPapers() {
+            const input = document.getElementById('searchInput').value.toUpperCase();
+            const tableRows = document.querySelectorAll('#pending-papers tr, #accepted-papers tr, #rejected-papers tr');
+
+            tableRows.forEach(row => {
+                const title = row.getElementsByTagName('td')[0].textContent.toUpperCase();
+                if (title.includes(input)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Function to fetch and display approved papers
         function fetchApprovedPapers() {
             fetch('fetch_papers.php')
                 .then(response => response.json())
                 .then(papers => {
-                    const tableBody = document.getElementById('paper-table-body');
-                    tableBody.innerHTML = ''; 
+                    const pendingBody = document.getElementById('pending-papers');
+                    const acceptedBody = document.getElementById('accepted-papers');
+                    const rejectedBody = document.getElementById('rejected-papers');
+
                     papers.forEach(paper => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${paper.title}</td>
                             <td><a href="#" onclick="openPaperDescription(event, '${paper.title}', '${paper.description}')">View Paper</a></td>
                         `;
-                        tableBody.appendChild(row);
+                        
+                        if (paper.status === 'pending') {
+                            pendingBody.appendChild(row);
+                        } else if (paper.status === 'accepted') {
+                            acceptedBody.appendChild(row);
+                        } else if (paper.status === 'rejected') {
+                            rejectedBody.appendChild(row);
+                        }
                     });
                 })
                 .catch(error => console.error('Error fetching approved papers:', error));
         }
 
+        // Function to open paper description in a new window
         function openPaperDescription(event, title, description) {
             event.preventDefault();
             const descriptionWindow = window.open('', '_blank');
@@ -258,6 +284,8 @@
                 </html>
             `);
         }
+
+        // Initialize by fetching approved papers on page load
         window.onload = function() {
             fetchApprovedPapers();
         };
