@@ -50,7 +50,7 @@ if ($conn->connect_error) {
  ```
 5. **Start the Application:**
 Launch your local server environment (XAMPP).
-Access the application through your web browser: http://localhost/publication/tamplates/login.html
+Access the application through your web browser: http://192.168.159.1/publication/tamplates/login.html
 ## Contributing
 
 Contributions are welcome! If you find any issues or have suggestions for improvement, please create an issue or submit a pull request.
