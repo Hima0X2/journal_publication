@@ -1,62 +1,30 @@
 <?php
 session_start();
+$userLoggedIn = isset($_SESSION['username']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <title>Dashboard</title>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        .navbar {
-            background-color: #343a40;
-            color: #fff;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .navbar-nav .nav-link {
+            transition: color 0.3s;
         }
 
-        .navbar h2 {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        .navbar ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        .navbar ul li {
-            margin-left: 20px;
-        }
-
-        .navbar ul li a {
-            text-decoration: none;
-            color: #fff;
-            transition: 0.3s;
-        }
-
-        .navbar ul li a:hover {
-            color: #adb5bd;
-        }
-
-        .content {
-            flex: 1;
-            padding: 20px;
+        .navbar-nav .nav-link:hover {
+            color: #adb5bd !important;
         }
 
         .main-content {
@@ -67,238 +35,185 @@ session_start();
             margin-top: 20px;
         }
 
-        .main-content h1 {
-            margin-top: 0;
-        }
-
-        .main-content .table-container {
-            overflow-x: auto;
-        }
-
-        .main-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .main-content th, .main-content td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        .main-content th {
-            background-color: #343a40;
-            color: #fff;
-        }
-
-        footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .social-icons {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-
-        .social-icons a {
-            margin-right: 10px;
-        }
-
         .social-icons .icon {
-            width: 30px; /* Adjust the width as needed */
+            width: 30px;
             height: auto;
-        }
-
-        .contact-info {
-            text-align: right;
-        }
-
-        .contact-info p {
-            margin: 5px 0;
-        }
-
-        .contact-info form {
-            display: flex;
-            align-items: center;
-        }
-
-        .contact-info input[type="email"] {
-            padding: 8px;
             margin-right: 10px;
-            width: 200px;
+            transition: transform 0.3s;
         }
 
-        .contact-info button {
-            padding: 8px 15px;
-            background-color: #007bff;
+        .social-icons .icon:hover {
+            transform: scale(1.1);
+        }
+
+        .contact-info p, .contact-info input[type="email"], .contact-info button {
+            transition: color 0.3s, background-color 0.3s, transform 0.3s;
+        }
+
+        .contact-info p:hover, .contact-info input[type="email"]:hover, .contact-info button:hover {
+            color: #adb5bd;
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Button animations */
+        .btn {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-back {
+            background-color: #6c757d;
             border: none;
-            color: #fff;
-            cursor: pointer;
         }
 
-        @media (max-width: 768px) {
-            .navbar ul li {
-                margin-left: 10px;
-            }
+        .btn-accept {
+            background-color: #28a745;
+            border: none;
+        }
 
-            .main-content {
-                padding: 10px;
-            }
+        .btn-reject {
+            background-color: #dc3545;
+            border: none;
+        }
 
-            .main-content th, .main-content td {
-                padding: 8px;
-            }
-            .icon {
-        width: 50px; /* Adjust the width as needed */
-        height: 50px; /* Maintain aspect ratio */
-    }
+        .btn-back:hover, .btn-accept:hover, .btn-reject:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h2>Dashboard</h2>
-        <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="upload.php">Upload Paper</a></li>
-            <li><a href="update_user.php">Settings</a></li>
-            <li><a href="about.php">About us</a></li>
-            <li><a href="logout.php">Logout</a></li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="dashboard.php">Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
+            <?php if ($userLoggedIn): ?>
+                <li class="nav-item"><a class="nav-link" href="upload.php">Upload Paper</a></li>
+                <li class="nav-item"><a class="nav-link" href="update_user.php">Settings</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.php">About us</a></li>
+                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+            <?php else: ?>
+                <li class="nav-item"><a class="nav-link" href="about.php">About us</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+            <?php endif; ?>
         </ul>
     </div>
+</nav>
 
-    <div class="content">
-        <div class="main-content">
-            <h1>Paper Publications</h1>
-            <input type="text" id="searchInput" onkeyup="searchPapers()" placeholder="Search by title..." style="width: 800px; padding: 10px; font-size: 16px;">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Paper</th>
-                        </tr>
-                    </thead>
-                    <tbody id="accepted-papers"></tbody>
-                </table>
+<div class="container flex-grow-1">
+    <div class="main-content mt-4">
+        <h1>Paper Publications</h1>
+        <input type="text" id="searchInput" class="form-control" onkeyup="searchPapers()" placeholder="Search by title...">
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Keyword</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="accepted-papers"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="mt-auto bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="social-icons mr-3">
+                    <a href="#" target="_blank"><img src="../images/facebook.png" class="icon"></a>
+                    <a href="#" target="_blank"><img src="../images/instagram.png" class="icon"></a>
+                    <a href="#" target="_blank"><img src="../images/twit.png" class="icon"></a>
+                    <a href="#" target="_blank"><img src="../images/linkedin.png" class="icon"></a>
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <p>Get in Touch</p>
+                <p><i class="fa fa-map-marker"></i> Chandpur, Dhaka, Bangladesh</p>
+                <p><i class="fa fa-envelope"></i> info@example.com</p>
+                <p><i class="fa fa-phone"></i> +8801872879611</p>
+                <form action="submit_email.php" method="POST" class="form-inline justify-content-end">
+                    <div class="form-group mb-2">
+                        <label for="email" class="sr-only">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Your email...">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2 ml-2">Submit</button>
+                </form>
             </div>
         </div>
     </div>
+</footer>
 
-    <footer>
-        <div class="footer-left">
-            <div class="social-icons">
-                <a href="#" target="_blank"><img src="../images/facebook.png" class="icon"></a>
-                <a href="#" target="_blank"><img src="../images/instagram.png" class="icon"></a>
-                <a href="#" target="_blank"><img src="../images/twit.png" class="icon"></a>
-                <a href="#" target="_blank"><img src="../images/linkedin.png" class="icon"></a>
-            </div>
-        </div>
-        <div class="contact-info">
-            <p>Get in Touch</p>
-            <p><i class="fas fa-map-marker-alt"></i> Chandpur,Dhaka,Bangladesh</p>
-            <p><i class="fas fa-envelope"></i> info@example.com</p>
-            <p><i class="fas fa-phone"></i> +8801872879611</p>
-        
-            <form action="submit_email.php" method="POST">
-                <input type="email" id="email" name="email" placeholder="Your email...">
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    </footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function openPaperDescription(event, title, abstract, keyword, description) {
+        event.preventDefault();
+        const currentUrl = window.location.href;
+        const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+        const descriptionWindow = window.open(`${baseUrl}/paper_description.html?title=${encodeURIComponent(title)}&abstract=${encodeURIComponent(abstract)}&keyword=${encodeURIComponent(keyword)}&description=${encodeURIComponent(description)}`, '_blank');
+    }
 
-    <script>
-        // Function to filter papers by title
-        function searchPapers() {
-            const input = document.getElementById('searchInput').value.toUpperCase();
-            const tableRows = document.querySelectorAll('#pending-papers tr, #accepted-papers tr, #rejected-papers tr');
+    function fetchApprovedPapers() {
+        fetch('fetch_papers.php')
+            .then(response => response.json())
+            .then(papers => {
+                const pendingBody = document.getElementById('pending-papers');
+                const acceptedBody = document.getElementById('accepted-papers');
+                const rejectedBody = document.getElementById('rejected-papers');
 
-            tableRows.forEach(row => {
-                const title = row.getElementsByTagName('td')[0].textContent.toUpperCase();
-                if (title.includes(input)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
+                papers.forEach(paper => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${paper.title}</td>
+                        <td>${paper.keyword}</td>
+                        <td style="width: 150px;">
+                            <a href="#" onclick="openPaperDescription(event, '${paper.title}', '${paper.abstract}', '${paper.keyword}', '${paper.description}')">
+                                <img class="icon" src="../images/paper.jpg" style="width: 20%; height: auto;">
+                            </a>
+                        </td>
+                    `;
+                    
+                    if (paper.status === 'pending') {
+                        pendingBody.appendChild(row);
+                    } else if (paper.status === 'accepted') {
+                        acceptedBody.appendChild(row);
+                    } else if (paper.status === 'rejected') {
+                        rejectedBody.appendChild(row);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching approved papers:', error));
+    }
 
-        // Function to fetch and display approved papers
-        function fetchApprovedPapers() {
-            fetch('fetch_papers.php')
-                .then(response => response.json())
-                .then(papers => {
-                    const pendingBody = document.getElementById('pending-papers');
-                    const acceptedBody = document.getElementById('accepted-papers');
-                    const rejectedBody = document.getElementById('rejected-papers');
+    function searchPapers() {
+        const input = document.getElementById('searchInput').value.toUpperCase();
+        const tableRows = document.querySelectorAll('#pending-papers tr, #accepted-papers tr, #rejected-papers tr');
 
-                    papers.forEach(paper => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${paper.title}</td>
-                            <td style="width: 150px;">
-    <a href="#" onclick="openPaperDescription(event, '${paper.title}', '${paper.description}')">
-        <img class="icon" src="../images/paper.jpg" style="width: 20%; height: auto;">
-    </a>
-</td>
-                        `;
-                        
-                        if (paper.status === 'pending') {
-                            pendingBody.appendChild(row);
-                        } else if (paper.status === 'accepted') {
-                            acceptedBody.appendChild(row);
-                        } else if (paper.status === 'rejected') {
-                            rejectedBody.appendChild(row);
-                        }
-                    });
-                })
-                .catch(error => console.error('Error fetching approved papers:', error));
-        }
+        tableRows.forEach(row => {
+            const title = row.getElementsByTagName('td')[0].textContent.toUpperCase();
+            if (title.includes(input)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
 
-        // Function to open paper description in a new window
-        function openPaperDescription(event, title, description) {
-            event.preventDefault();
-            const descriptionWindow = window.open('', '_blank');
-            descriptionWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>${title} - Paper Description</title>
-                    <style>
-                        body {
-                            font-family: 'Roboto', sans-serif;
-                            padding: 20px;
-                            background-color: #f8f9fa;
-                        }
-                        h2 {
-                            color: #007bff;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2>${title}</h2>
-                    <p>${description}</p>
-                </body>
-                </html>
-            `);
-        }
-
-        // Initialize by fetching approved papers on page load
-        window.onload = function() {
-            fetchApprovedPapers();
-        };
-    </script>
+    window.onload = function() {
+        fetchApprovedPapers();
+    };
+</script>
 </body>
 </html>
