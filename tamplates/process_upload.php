@@ -12,14 +12,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate and sanitize inputs
     $title = sanitize($_POST['title']);
     $description = sanitize($_POST['description']);
+    $abstract = sanitize($_POST['abstract']);
+    $keyword = sanitize($_POST['keyword']);
+
 
     // Insert data into database
-    $sql = "INSERT INTO papers (title, description, status) VALUES ('$title', '$description', 'pending')";
+    $sql = "INSERT INTO paper (title, description, abstract, keyword, status) VALUES ('$title', '$description','$abstract', '$keyword', 'pending')";
     
     if ($conn->query($sql) === TRUE) {
         // Redirect to success page or display success message
         echo '<script>alert("Paper submitted.Waiting for admin approval.");</script>';
-        header("Location: dashboard.html");
+        header("Location: dashboard.php");
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
