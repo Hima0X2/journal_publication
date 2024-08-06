@@ -12,65 +12,123 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f0f0f0;
         }
 
         .container {
-            width: 80%;
-            max-width: 600px;
+            width: 90%;
+            max-width: 800px;
             background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            margin-top: 30px;
+            box-sizing: border-box;
         }
 
-        h2 {
+        .container h2 {
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .paper-detail {
             margin-bottom: 20px;
         }
 
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .paper-detail h3 {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .paper-detail p {
+            margin: 0;
+            color: #777;
+        }
+
+        .btn-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
         }
 
         button {
-            padding: 10px 20px;
-            margin: 10px;
+            padding: 12px 24px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            outline: none;
+        }
+
+        .btn-back {
+            background-color: #3498db;
             color: #fff;
         }
 
         .btn-accept {
             background-color: #2ecc71;
+            color: #fff;
         }
 
         .btn-reject {
             background-color: #e74c3c;
+            color: #fff;
         }
 
-        .btn-back {
-            background-color: #3498db;
+        .btn-back .btn-accept .btn-reject{
+            transform: scale(1.1);
         }
-        .bold-input {
-            font-weight: bold;
+        button:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Paper Details</h2>
-        <button class="btn-back" onclick="goBack()">Back</button>
-        <input type="text" id="title" class="bold-input" readonly>
-        <textarea id="description" readonly></textarea>
-        <button class="btn-accept" onclick="updateStatus('accepted')">Accept</button>
-        <button class="btn-reject" onclick="updateStatus('rejected')">Reject</button>
+
+        <div class="paper-detail">
+            <h3>Title:</h3>
+            <p id="title" class="bold-input"></p>
+        </div>
+
+        <div class="paper-detail">
+            <h3>Keywords:</h3>
+            <p id="keywords"></p>
+        </div>
+
+        <div class="paper-detail">
+            <h3>Abstract:</h3>
+            <p id="abstract"></p>
+        </div>
+
+        <div class="paper-detail">
+            <h3>Description:</h3>
+            <p id="description"></p>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-back" onclick="goBack()">Back</button>
+            <button class="btn-accept" onclick="updateStatus('accepted')">Accept</button>
+            <button class="btn-reject" onclick="updateStatus('rejected')">Reject</button>
+        </div>
     </div>
 
     <script>
@@ -83,8 +141,10 @@
             fetch(`fetch_paper_details.php?id=${id}`)
                 .then(response => response.json())
                 .then(paper => {
-                    document.getElementById('title').value = paper.title;
-                    document.getElementById('description').value = paper.description;
+                    document.getElementById('title').textContent = paper.title;
+                    document.getElementById('keywords').textContent = paper.keywords;
+                    document.getElementById('abstract').textContent = paper.abstract;
+                    document.getElementById('description').textContent = paper.description;
                 })
                 .catch(error => console.error('Error fetching paper details:', error));
         }
