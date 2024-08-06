@@ -114,7 +114,7 @@ session_start();
 </head>
 <body>
     <div class="navbar">
-        <h2>About Us</h2>
+    <h2><a href="about.php" style="color: white; text-decoration: none;">About Us</a></h2>
         <ul>
             <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="upload.php">Upload Paper</a></li>
