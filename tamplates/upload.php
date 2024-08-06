@@ -69,9 +69,7 @@ session_start();
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             animation: slideInRight 0.5s ease-out; /* Example animation */
         }
-        .email{
-            background-color: #343a40;
-        }
+
         @keyframes fadeInUp {
             0% {
                 opacity: 0;
@@ -153,8 +151,14 @@ session_start();
         }
 
         .social-icons .icon {
-            width: 30px; /* Adjust the width as needed */
+            width: 30px;
             height: auto;
+            margin-right: 10px;
+            transition: transform 0.3s;
+        }
+
+        .social-icons .icon:hover {
+            transform: scale(1.1);
         }
 
         .contact-info {
@@ -187,16 +191,20 @@ session_start();
         .contact-info button:hover {
             background-color: #0056b3;
         }
+
         .bold-label {
-    font-weight: bold;
-}
+            font-weight: bold;
+        }
+        .email {
+        color: #343a40; /* Set text color to black */
+    }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <h2>Dashboard</h2>
+    <h2><a href="upload.php" style="color: white; text-decoration: none;">Upload Paper</a></h2>
         <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="dashboard.php">Dashboard</a></li>
             <li><a href="upload.php">Upload Paper</a></li>
             <li><a href="update_user.php">Settings</a></li>
             <li><a href="about.php">About us</a></li>
@@ -207,10 +215,18 @@ session_start();
     <h2>Upload Paper</h2>
     <form action="process_upload.php" method="POST" enctype="multipart/form-data">
         <label for="title">Title:</label><br>
-        <input  type="text" id="title" name="title" class="bold-label" required><br><br>
+        <input type="text" id="title" name="title" class="bold-label" required><br><br>
+        
+        <label for="abstract">Abstract:</label><br>
+        <textarea id="abstract" name="abstract" rows="4" required></textarea><br><br>
+        
+        <label for="keyword">Keyword:</label><br>
+        <input type="text" id="keyword" name="keyword" required><br><br>
         
         <label for="description">Description:</label><br>
         <textarea id="description" name="description" rows="4" required></textarea><br><br>
+        <label for="file">Upload Paper</label>
+        <input type="file" id="file" name="file" accept=".pdf" required><br><br>
         
         <!-- <label for="file">Upload Paper:</label><br>
         <input type="file" id="file" name="file" accept=".pdf,.doc,.docx" required><br><br> -->
